@@ -1,15 +1,13 @@
 
 #Question 1
-get_date_of_birth(id_number:str): 
+def get_date_of_birth(id_number:str): 
     """
     STEP 2: Extract the date of birth from the ID number and return it as a string
 
     return format: DD/MM/YY: 
     """
-    birth_of_date = id_number[4:6] 
-    return 
-
-
+    return id_number[0:6][::-2] + '/' + id_number[2:4][::-4] + '/' + id_number[4:6]
+  
 #Question 2    
 def get_gender(id_number):
     """
@@ -21,11 +19,8 @@ def get_gender(id_number):
     """
     
     if int(id_number[6]) > 4:
-    'Male'
-    else:
-    'Female'
+         return "Female" if int(id_number[6]) < 5 else "Male"
 
-    
 #Question 3
 def get_citizenship(id_number):
     """
@@ -36,11 +31,7 @@ def get_citizenship(id_number):
     a South African citizen and if it is greater than 01, the person is a non-South 
     African citizen.
     """
-if int(id_number[10]) == 0:
-'South African'
-else:
-'Non-South African'
-
+    return "South African" if int(id_number[10]) < 5 else "Non-South African"
 
 #Question 4
 
@@ -52,9 +43,15 @@ else:
 
     TODO: define a function called fizzbuzz and implement the fucntionality above.
     """
-    
-
-            
+    for i in range(1, n + 1):
+        if i % 3 == 0 and i % 5 == 0:
+            print("FizzBuzz")
+        elif i % 3 == 0:
+            print("Fizz")
+        elif i % 5 == 0:
+            print("Buzz")
+        else:
+            print(i)
 
 #Question 5
 def check_number(n:int):
@@ -81,3 +78,19 @@ def check_number(n:int):
     If n is non-positive and odd then return 'Extremely Weird'
     """
 
+def check_number(n: int) -> str:
+    """Returns a string based on the given number."""
+    if n <= 0:
+        return 'Very Weird' if n % 2 == 0 else 'Extremely Weird'
+    
+    if n % 2 != 0:
+        return 'Weird'
+    
+    if 2 <= n <= 5:
+        return 'Not Weird'
+    elif 6 <= n <= 20:
+        return 'Weird'
+    elif n > 20:
+        return 'Not Weird'
+    
+    return 'Undefined'  
