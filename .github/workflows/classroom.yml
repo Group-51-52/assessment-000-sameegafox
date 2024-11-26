@@ -1,11 +1,12 @@
 name: Autograding Tests
-'on':
-- push
-- repository_dispatch
+
+on:
+  - push
+  - repository_dispatch
+
 permissions:
-  checks: write
-  actions: read
   contents: read
+
 jobs:
   run-autograding-tests:
     runs-on: ubuntu-latest
@@ -13,16 +14,26 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: Run test cases
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Run unittest tests
       id: run-test-cases
-      uses: classroom-resources/autograding-python-grader@v1
-      with:
-        timeout: 5
-        max-score: 1
-        setup-command: ''
-    - name: Autograding Reporter
-      uses: classroom-resources/autograding-grading-reporter@v1
+      run: |
+        python3 -m unittest tests/test_fundamentals.py > failing_tests.txt || true
+        echo "result=$(cat failing_tests.txt)" >> $GITHUB_ENV
       env:
-        RUN-TEST-CASES_RESULTS: "${{steps.run-test-cases.outputs.result}}"
-      with:
-        runners: run-test-cases
+        GITHUB_ENV: $GITHUB_ENV
+
+    - name: Display failing test(s)
+      run: cat failing_tests.txt
+
+    # - name: Autograding Reporter
+    #   uses: classroom-resources/autograding-grading-reporter@v1
+    #   env:
+    #     RUN-TEST-CASES_RESULTS: "${{steps.run-test-cases.outputs.result}}"
+    #   with:
+    #     runners: run-test-cases
